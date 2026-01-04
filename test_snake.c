@@ -475,6 +475,127 @@ void test_game_modes() {
     TEST_EQUAL(game.mode, MODE_FREE, "Mode libre");
 }
 
+void test_difficulty_extreme() {
+    printf("\n=== Test: Difficulté Extrême ===\n");
+    Game game;
+    init_game(&game, MODE_CLASSIC, DIFF_EXTREME, 0);
+    TEST_EQUAL(game.grid_width, 40, "Largeur grille (extrême) = 40");
+    TEST_EQUAL(game.grid_height, 15, "Hauteur grille (extrême) = 15");
+    TEST_EQUAL(game.base_speed, 50, "Vitesse de base (extrême) = 50");
+}
+
+void test_multiplier_system() {
+    printf("\n=== Test: Système Multiplicateur ===\n");
+    Game game;
+    init_game(&game, MODE_CLASSIC, DIFF_MEDIUM, 0);
+    TEST_EQUAL(game.snake1.multiplier, 1, "Multiplicateur initial = 1");
+    game.snake1.multiplier = 2;
+    int points = 10;
+    int final_points = points * game.snake1.multiplier;
+    TEST_EQUAL(final_points, 20, "Points multipliés (10 * 2 = 20)");
+    game.snake1.multiplier = 3;
+    final_points = points * game.snake1.multiplier;
+    TEST_EQUAL(final_points, 30, "Points multipliés (10 * 3 = 30)");
+}
+
+void test_top_scores_limits() {
+    printf("\n=== Test: Limites Top Scores ===\n");
+    remove(".snake_top_scores");
+    Game game;
+    game.top_score_count = 0;
+    // Ajouter plus de MAX_TOP_SCORES scores
+    for (int i = 0; i < MAX_TOP_SCORES + 5; i++) {
+        add_top_score(&game, 50 + i);
+    }
+    TEST_EQUAL(game.top_score_count, MAX_TOP_SCORES, "Nombre max de scores respecté");
+    TEST_EQUAL(game.top_scores[0].score, MAX_TOP_SCORES + 4, "Meilleur score = MAX_TOP_SCORES + 4");
+    remove(".snake_top_scores");
+}
+
+void test_snake_body_positions() {
+    printf("\n=== Test: Positions du Corps du Serpent ===\n");
+    Snake snake;
+    init_snake(&snake, 30, 10, 1);
+    TEST_EQUAL(snake.body[0].x, 30, "Tête X = 30");
+    TEST_EQUAL(snake.body[0].y, 10, "Tête Y = 10");
+    TEST_EQUAL(snake.body[1].x, 29, "Corps[1] X = 29");
+    TEST_EQUAL(snake.body[1].y, 10, "Corps[1] Y = 10");
+    TEST_EQUAL(snake.body[2].x, 28, "Corps[2] X = 28");
+    TEST_EQUAL(snake.body[2].y, 10, "Corps[2] Y = 10");
+    // Vérifier que les positions sont consécutives
+    for (int i = 1; i < snake.length; i++) {
+        TEST_EQUAL(snake.body[i].x, snake.body[0].x - i, "Position corps consécutive X");
+        TEST_EQUAL(snake.body[i].y, snake.body[0].y, "Position corps consécutive Y");
+    }
+}
+
+void test_position_validation_edge_cases() {
+    printf("\n=== Test: Cas Limites Validation Positions ===\n");
+    Game game;
+    game.grid_width = 60;
+    game.grid_height = 20;
+    game.obstacle_count = 0;
+    game.food_count = 0;
+    game.multiplayer = 0;
+    game.snake1.length = 0;
+    // Position à la limite (0, 0)
+    Position edge1 = {0, 0};
+    TEST_EQUAL(is_position_valid(&game, edge1, 0), 1, "Position (0,0) valide");
+    // Position à la limite (width-1, height-1)
+    Position edge2 = {game.grid_width - 1, game.grid_height - 1};
+    TEST_EQUAL(is_position_valid(&game, edge2, 0), 1, "Position limite valide");
+    // Position juste hors limites
+    Position invalid1 = {game.grid_width, 10};
+    TEST_EQUAL(is_position_valid(&game, invalid1, 0), 0, "Position X = width rejetée");
+    Position invalid2 = {30, game.grid_height};
+    TEST_EQUAL(is_position_valid(&game, invalid2, 0), 0, "Position Y = height rejetée");
+}
+
+void test_multiplier_timer_restoration() {
+    printf("\n=== Test: Restauration Multiplicateur ===\n");
+    Game game;
+    init_game(&game, MODE_CLASSIC, DIFF_MEDIUM, 1);
+    game.multiplier_timer = 1;
+    game.snake1.multiplier = 2;
+    game.snake2.multiplier = 2;
+    update_powerups(&game);
+    TEST_EQUAL(game.multiplier_timer, 0, "Timer multiplicateur = 0");
+    TEST_EQUAL(game.snake1.multiplier, 1, "Multiplicateur joueur 1 restauré");
+    TEST_EQUAL(game.snake2.multiplier, 1, "Multiplicateur joueur 2 restauré");
+}
+
+void test_speed_calculation() {
+    printf("\n=== Test: Calcul de Vitesse ===\n");
+    Game game;
+    init_game(&game, MODE_CLASSIC, DIFF_MEDIUM, 0);
+    game.level = 1;
+    game.base_speed = 150;
+    game.slow_timer = 0;
+    int expected_speed = game.base_speed - (game.level - 1) * 5;
+    TEST_EQUAL(expected_speed, 150, "Vitesse niveau 1 = 150");
+    game.level = 5;
+    expected_speed = game.base_speed - (game.level - 1) * 5;
+    TEST_EQUAL(expected_speed, 130, "Vitesse niveau 5 = 130");
+}
+
+void test_food_type_characters() {
+    printf("\n=== Test: Tous les Types de Nourriture ===\n");
+    TEST_ASSERT(strcmp(get_food_char(FOOD_NORMAL), "*") == 0, "FOOD_NORMAL = *");
+    TEST_ASSERT(strcmp(get_food_char(FOOD_GOLDEN), "$") == 0, "FOOD_GOLDEN = $");
+    TEST_ASSERT(strcmp(get_food_char(FOOD_POISON), "X") == 0, "FOOD_POISON = X");
+    TEST_ASSERT(strcmp(get_food_char(FOOD_FAST), "!") == 0, "FOOD_FAST = !");
+    TEST_ASSERT(strcmp(get_food_char(FOOD_BONUS), "?") == 0, "FOOD_BONUS = ?");
+}
+
+void test_powerup_type_characters() {
+    printf("\n=== Test: Tous les Types de Power-ups ===\n");
+    TEST_ASSERT(strcmp(get_powerup_char(POWERUP_SLOW), "S") == 0, "POWERUP_SLOW = S");
+    TEST_ASSERT(strcmp(get_powerup_char(POWERUP_INVINCIBLE), "I") == 0, "POWERUP_INVINCIBLE = I");
+    TEST_ASSERT(strcmp(get_powerup_char(POWERUP_MULTIPLIER), "M") == 0, "POWERUP_MULTIPLIER = M");
+    TEST_ASSERT(strcmp(get_powerup_char(POWERUP_MAGNETIC), "G") == 0, "POWERUP_MAGNETIC = G");
+    TEST_ASSERT(strcmp(get_powerup_char(POWERUP_NONE), "P") == 0, "POWERUP_NONE = P (default)");
+}
+
 int main() {
     printf("═══════════════════════════════════════════════════════\n");
     printf("  TESTS UNITAIRES - JEU DU SERPENT\n");
@@ -490,6 +611,15 @@ int main() {
     test_get_powerup_char();
     test_snake_movement_logic();
     test_game_modes();
+    test_difficulty_extreme();
+    test_multiplier_system();
+    test_top_scores_limits();
+    test_snake_body_positions();
+    test_position_validation_edge_cases();
+    test_multiplier_timer_restoration();
+    test_speed_calculation();
+    test_food_type_characters();
+    test_powerup_type_characters();
     printf("\n═══════════════════════════════════════════════════════\n");
     printf("  RÉSULTATS DES TESTS\n");
     printf("═══════════════════════════════════════════════════════\n");
