@@ -1,8 +1,8 @@
 # Jeu du Serpent en C - Version Complète
 
-Un jeu de serpent ultra-développé en C utilisant la bibliothèque **ncurses** pour l'interface graphique avec de nombreuses fonctionnalités avancées.
+Un jeu de serpent ultra-développé en C utilisant la bibliothèque **SDL2** pour l'interface graphique avec de nombreuses fonctionnalités avancées.
 
-> 📖 **Documentation de l'interface graphique** : Voir [INTERFACE_GRAPHIQUE.md](INTERFACE_GRAPHIQUE.md) pour les détails techniques sur l'intégration de l'interface graphique.
+> 🎮 **Interface Graphique** : Le jeu utilise SDL2 pour une interface graphique moderne avec fenêtres, rendu accéléré et gestion des événements.
 
 ## 🎮 Fonctionnalités Principales
 
@@ -90,7 +90,7 @@ make
 
 Ou manuellement:
 ```bash
-gcc -Wall -Wextra -std=c11 -O2 -o snake snake.c -lncurses
+gcc -Wall -Wextra -std=c11 -O2 -o snake snake.c $(sdl2-config --cflags --libs)
 ```
 
 ## 🎯 Utilisation
