@@ -63,23 +63,23 @@ Un jeu de serpent ultra-développé en C utilisant la bibliothèque **ncurses** 
 ## 🚀 Prérequis
 
 - GCC (GNU Compiler Collection)
-- Bibliothèque ncurses (`libncurses-dev` sur Debian/Ubuntu, `ncurses-devel` sur Fedora)
+- Bibliothèque SDL2 (`libsdl2-dev` sur Debian/Ubuntu, `SDL2-devel` sur Fedora)
 
 ### Installation des dépendances
 
 **Debian/Ubuntu:**
 ```bash
-sudo apt-get install build-essential libncurses-dev
+sudo apt-get install build-essential libsdl2-dev
 ```
 
 **Fedora/RHEL:**
 ```bash
-sudo dnf install gcc ncurses-devel
+sudo dnf install gcc SDL2-devel
 ```
 
 **macOS:**
 ```bash
-brew install ncurses
+brew install sdl2
 ```
 
 ## 📦 Compilation

@@ -870,7 +870,7 @@ void game_loop(Game *game) {
     }
 }
 
-int main(int argc, char *argv[]) {
+int main(void) {
     if (!init_sdl()) {
         return 1;
     }
@@ -882,7 +882,7 @@ int main(int argc, char *argv[]) {
     
     game_loop(&game);
     
-    int choice = show_game_over_menu(&game);
+    show_game_over_menu(&game);
     
     cleanup_sdl();
     return 0;
