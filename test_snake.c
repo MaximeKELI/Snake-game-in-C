@@ -508,7 +508,7 @@ void test_top_scores_limits() {
         add_top_score(&game, 50 + i);
     }
     TEST_EQUAL(game.top_score_count, MAX_TOP_SCORES, "Nombre max de scores respecté");
-    TEST_EQUAL(game.top_scores[0].score, MAX_TOP_SCORES + 4, "Meilleur score = MAX_TOP_SCORES + 4");
+    TEST_EQUAL(game.top_scores[0].score, 50 + MAX_TOP_SCORES + 4, "Meilleur score correct");
     remove(".snake_top_scores");
 }
 
