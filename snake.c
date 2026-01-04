@@ -541,9 +541,15 @@ void move_snake(Game *game, Snake *snake) {
             head.y < 0 || head.y >= game->grid_height) {
             if (game->mode == MODE_ARCADE && snake->lives > 0) {
                 snake->lives--;
-                // Réinitialiser position
-                head.x = game->grid_width / 2;
-                head.y = game->grid_height / 2;
+                // Réinitialiser le serpent
+                int start_x = game->grid_width / 2;
+                int start_y = game->grid_height / 2;
+                snake->length = 3;
+                for (int j = 0; j < snake->length; j++) {
+                    snake->body[j].x = start_x - j;
+                    snake->body[j].y = start_y;
+                }
+                head = snake->body[0];
             } else {
                 if (game->multiplayer) {
                     game->winner = (snake == &game->snake1) ? 2 : 1;
@@ -560,9 +566,15 @@ void move_snake(Game *game, Snake *snake) {
             if (head.x == snake->body[i].x && head.y == snake->body[i].y) {
                 if (game->mode == MODE_ARCADE && snake->lives > 0) {
                     snake->lives--;
-                    head.x = game->grid_width / 2;
-                    head.y = game->grid_height / 2;
+                    // Réinitialiser le serpent
+                    int start_x = game->grid_width / 2;
+                    int start_y = game->grid_height / 2;
                     snake->length = 3;
+                    for (int j = 0; j < snake->length; j++) {
+                        snake->body[j].x = start_x - j;
+                        snake->body[j].y = start_y;
+                    }
+                    head = snake->body[0];
                 } else {
                     if (game->multiplayer) {
                         game->winner = (snake == &game->snake1) ? 2 : 1;
@@ -582,9 +594,15 @@ void move_snake(Game *game, Snake *snake) {
                 if (game->invincible_timer == 0) {
                     if (game->mode == MODE_ARCADE && snake->lives > 0) {
                         snake->lives--;
-                        head.x = game->grid_width / 2;
-                        head.y = game->grid_height / 2;
+                        // Réinitialiser le serpent
+                        int start_x = game->grid_width / 2;
+                        int start_y = game->grid_height / 2;
                         snake->length = 3;
+                        for (int j = 0; j < snake->length; j++) {
+                            snake->body[j].x = start_x - j;
+                            snake->body[j].y = start_y;
+                        }
+                        head = snake->body[0];
                     } else {
                         game->winner = (snake == &game->snake1) ? 2 : 1;
                         game->game_over = 1;
