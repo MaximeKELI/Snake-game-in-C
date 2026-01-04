@@ -625,6 +625,9 @@ void move_snake(Game *game, Snake *snake) {
                 case POWERUP_MAGNETIC:
                     game->magnetic_timer = POWERUP_DURATION;
                     break;
+                case POWERUP_NONE:
+                default:
+                    break;
             }
             game->powerup.active = 0;
         }
