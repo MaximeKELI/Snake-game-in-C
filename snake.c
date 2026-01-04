@@ -1193,9 +1193,13 @@ int show_game_mode_menu() {
             case '\n':
             case KEY_ENTER:
                 delwin(menu_win);
+                clear();
+                refresh();
                 return selected;
             case 27:  // ESC
                 delwin(menu_win);
+                clear();
+                refresh();
                 return -1;
         }
     }
@@ -1247,9 +1251,13 @@ int show_difficulty_menu() {
             case '\n':
             case KEY_ENTER:
                 delwin(menu_win);
+                clear();
+                refresh();
                 return selected;
             case 27:
                 delwin(menu_win);
+                clear();
+                refresh();
                 return 1;
         }
     }
