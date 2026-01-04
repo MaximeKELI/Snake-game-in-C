@@ -1,3 +1,4 @@
+#define _DEFAULT_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -65,7 +66,9 @@ int load_best_score() {
     FILE *file = fopen(".snake_best_score", "r");
     int score = 0;
     if (file) {
-        fscanf(file, "%d", &score);
+        if (fscanf(file, "%d", &score) != 1) {
+            score = 0;
+        }
         fclose(file);
     }
     return score;
@@ -265,12 +268,12 @@ void draw_game(Game *game) {
     char info[100];
     snprintf(info, sizeof(info), "Score: %d | Niveau: %d | Longueur: %d", 
              game->score, game->level, game->snake.length);
-    mvwprintw(game->win, 0, 2, info);
+    mvwprintw(game->win, 0, 2, "%s", info);
     
     if (game->paused) {
-        char pause_msg[] = "PAUSE - Appuyez sur P pour continuer";
-        int x = (WIDTH - strlen(pause_msg)) / 2;
-        mvwprintw(game->win, HEIGHT / 2, x, pause_msg);
+        const char *pause_msg = "PAUSE - Appuyez sur P pour continuer";
+        int x = (WIDTH - (int)strlen(pause_msg)) / 2;
+        mvwprintw(game->win, HEIGHT / 2, x, "%s", pause_msg);
     }
     
     wattroff(game->win, COLOR_PAIR(COLOR_TEXT));
@@ -307,7 +310,7 @@ int show_menu() {
         if (best > 0) {
             char best_str[50];
             snprintf(best_str, sizeof(best_str), "Meilleur score: %d", best);
-            mvwprintw(menu_win, 4, 12, best_str);
+            mvwprintw(menu_win, 4, 12, "%s", best_str);
         }
         
         for (int i = 0; i < num_options; i++) {
@@ -377,11 +380,11 @@ int show_game_over(Game *game) {
         wattron(gameover_win, COLOR_PAIR(COLOR_TEXT));
         char score_str[50];
         snprintf(score_str, sizeof(score_str), "Score final: %d", game->score);
-        mvwprintw(gameover_win, 4, 16, score_str);
+        mvwprintw(gameover_win, 4, 16, "%s", score_str);
         
         char best_str[50];
         snprintf(best_str, sizeof(best_str), "Meilleur score: %d", game->best_score);
-        mvwprintw(gameover_win, 5, 15, best_str);
+        mvwprintw(gameover_win, 5, 15, "%s", best_str);
         
         for (int i = 0; i < num_options; i++) {
             if (i == selected) {
