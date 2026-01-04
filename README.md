@@ -1,21 +1,64 @@
-# Jeu du Serpent en C
+# Jeu du Serpent en C - Version Complète
 
-Un jeu de serpent développé en C utilisant la bibliothèque ncurses avec de nombreuses fonctionnalités avancées.
+Un jeu de serpent ultra-développé en C utilisant la bibliothèque ncurses avec de nombreuses fonctionnalités avancées.
 
-## Fonctionnalités
+## 🎮 Fonctionnalités Principales
 
-- 🎮 Interface graphique complète avec ncurses
-- 🎨 Couleurs et design soigné
-- 📊 Système de score et de niveaux
-- 🏆 Meilleur score sauvegardé
-- 📋 Menu principal interactif
-- ⏸️ Pause (touche P)
-- ⚡ Vitesse progressive qui augmente avec les niveaux
-- 🎯 Collision detection (murs et corps)
-- 🌟 Croissance du serpent
-- ⌨️ Contrôles multiples (flèches ou WASD)
+### Types de Nourriture
+- **Nourriture normale** (★) : +10 points
+- **Nourriture dorée** ($) : +50 points (rare)
+- **Nourriture poison** (X) : Rétrécit le serpent de 2 segments, -5 points
+- **Nourriture rapide** (!) : Augmente temporairement la vitesse
+- **Nourriture bonus** (?) : +100 points (très rare)
 
-## Prérequis
+### Power-ups Spéciaux
+- **Ralentissement** (S) : Ralentit le jeu temporairement
+- **Invincibilité** (I) : Permet de passer à travers les obstacles et le corps
+- **Multiplicateur** (M) : Double les points obtenus
+- **Magnétique** (G) : Attire la nourriture vers le serpent
+
+### Modes de Jeu
+1. **Classique** : Mode traditionnel avec collisions mortelles
+2. **Arcade** : 3 vies, continue après collision
+3. **Défi** : Obstacles fixes et téléporteurs sur le terrain
+4. **Libre** : Passage à travers les murs (wrap-around)
+
+### Niveaux de Difficulté
+- **Facile** : Grande grille (80x30), vitesse lente (200ms)
+- **Moyen** : Grille normale (60x20), vitesse moyenne (150ms)
+- **Difficile** : Petite grille (50x18), vitesse rapide (100ms)
+- **Extrême** : Très petite grille (40x15), vitesse maximale (50ms)
+
+### Multijoueur
+- **Mode 2 joueurs** : Deux serpents s'affrontent sur le même terrain
+  - Joueur 1 : Contrôles WASD
+  - Joueur 2 : Contrôles Flèches directionnelles
+
+### Obstacles
+- **Obstacles fixes** : Murs qui bloquent le chemin
+- **Téléporteurs** : Portes qui téléportent le serpent
+
+### Statistiques et Classements
+- **Top 10** des meilleurs scores sauvegardés
+- Statistiques détaillées : niveau atteint, nourriture mangée, temps de jeu
+- Affichage des scores après chaque partie
+
+### Personnalisation
+- **4 thèmes de couleurs** : Classique, Neon, Rétro, Dark
+- Caractères personnalisés pour chaque serpent
+- Taille de grille adaptée selon la difficulté
+
+### Effets Visuels
+- Animation de pulsation pour la nourriture
+- Effets visuels pour les power-ups actifs
+- Indicateur de combo visible
+- Affichage des vies en mode arcade
+
+### Système de Combo
+- Bonus de points si vous mangez rapidement plusieurs nourritures
+- Multiplicateur progressif selon le combo
+
+## 🚀 Prérequis
 
 - GCC (GNU Compiler Collection)
 - Bibliothèque ncurses (`libncurses-dev` sur Debian/Ubuntu, `ncurses-devel` sur Fedora)
@@ -37,7 +80,7 @@ sudo dnf install gcc ncurses-devel
 brew install ncurses
 ```
 
-## Compilation
+## 📦 Compilation
 
 ```bash
 make
@@ -48,61 +91,123 @@ Ou manuellement:
 gcc -Wall -Wextra -std=c11 -O2 -o snake snake.c -lncurses
 ```
 
-## Utilisation
+## 🎯 Utilisation
 
 ### Lancer le jeu
 ```bash
 ./snake
 ```
 
-### Contrôles
+### Navigation dans les menus
+- **Flèches haut/bas** : Naviguer dans les menus
+- **Entrée** : Sélectionner
+- **ESC/Q** : Quitter/Retour
 
-**Navigation dans les menus:**
-- Flèches haut/bas pour naviguer
-- Entrée pour sélectionner
-- Q pour quitter
+### Contrôles en jeu
 
-**Dans le jeu:**
-- Flèches directionnelles ou WASD pour diriger le serpent
-- P pour mettre en pause/reprendre
-- Q pour quitter
+**Joueur 1 (Solo ou Multijoueur) :**
+- **Flèches directionnelles** ou **WASD** : Diriger le serpent
+- **P** : Mettre en pause/reprendre
+- **Q** : Quitter
+
+**Joueur 2 (Multijoueur uniquement) :**
+- **Flèches directionnelles** : Diriger le serpent
+- **P** : Pause (partagée)
+- **Q** : Quitter
 
 ### Règles du jeu
 
-1. Dirigez le serpent avec les flèches ou WASD
-2. Mangez la nourriture (★) pour grandir et gagner des points
-3. Évitez les murs et votre propre corps
-4. Le jeu accélère à chaque niveau (tous les 50 points)
-5. Le meilleur score est automatiquement sauvegardé
+1. **Dirigez le serpent** avec les flèches ou WASD
+2. **Mangez la nourriture** pour grandir et gagner des points
+3. **Évitez** les murs, votre propre corps, les obstacles et l'autre serpent (multijoueur)
+4. **Utilisez les power-ups** pour vous aider
+5. **Le jeu accélère** à chaque niveau (tous les 100 points)
+6. **En mode arcade**, vous avez 3 vies
+7. **En mode libre**, vous traversez les murs
 
-### Score
+### Score et Progression
 
-- +10 points par nourriture mangée
-- Niveau augmente tous les 50 points
+- Points variables selon le type de nourriture
+- Combo system : bonus si vous mangez rapidement
+- Multiplicateur de score avec power-up
+- Niveau augmente tous les 100 points
 - Vitesse augmente avec chaque niveau
-- Le meilleur score est sauvegardé dans `.snake_best_score`
+- Les meilleurs scores sont sauvegardés dans `.snake_top_scores`
 
-## Nettoyage
+## 🗂️ Structure du Code
 
-Pour supprimer les fichiers compilés et le fichier de meilleur score:
+- `snake.c` - Code source principal du jeu (1448 lignes)
+- `Makefile` - Fichier de compilation
+- `.snake_top_scores` - Fichier de sauvegarde des meilleurs scores (créé automatiquement)
+- `snake_backup.c` - Sauvegarde de l'ancienne version (481 lignes)
+
+## 🎨 Thèmes Disponibles
+
+1. **Classique** : Couleurs classiques (vert, jaune, rouge)
+2. **Neon** : Couleurs vives et fluorescentes
+3. **Rétro** : Style rétro arcade
+4. **Dark** : Thème sombre
+
+## 📊 Statistiques
+
+Le jeu enregistre :
+- Score final
+- Niveau atteint
+- Nombre de nourritures mangées
+- Temps de jeu
+- Top 10 des meilleurs scores
+
+## 🔧 Nettoyage
+
+Pour supprimer les fichiers compilés et les fichiers de scores:
 ```bash
 make clean
 ```
 
-## Structure du code
+Cela supprime :
+- `snake` (exécutable)
+- `.snake_best_score` (ancien format)
+- `.snake_top_scores` (nouveau format)
 
-- `snake.c` - Code source principal du jeu
-- `Makefile` - Fichier de compilation
-- `.snake_best_score` - Fichier de sauvegarde du meilleur score (créé automatiquement)
+## 💡 Fonctionnalités Techniques
 
-## Développement
+Le jeu est entièrement écrit en C standard (C11) et utilise :
+- **ncurses** pour l'interface graphique et les couleurs
+- **Structures de données** complexes pour gérer le jeu
+- **Gestion des entrées clavier** en temps réel
+- **Système de pause** et menus interactifs
+- **Sauvegarde/chargement** des scores
+- **Gestion des collisions** avancée
+- **Système de timer** pour les effets temporaires
+- **Génération procédurale** d'obstacles et de nourriture
 
-Le jeu est entièrement écrit en C standard (C11) et utilise:
-- ncurses pour l'interface graphique
-- Structures de données pour le serpent et le jeu
-- Gestion des entrées clavier en temps réel
-- Système de pause et de menus interactifs
+## 🎮 Exemples de Gameplay
 
-## Auteur
+### Mode Classique
+Jouez traditionnellement avec collisions mortelles.
 
-Jeu développé en C avec toutes les fonctionnalités modernes d'un jeu de serpent complet.
+### Mode Arcade
+Avec 3 vies, vous pouvez continuer après une collision. Parfait pour les débutants !
+
+### Mode Défi
+Des obstacles parsèment le terrain. Les téléporteurs peuvent être utiles ou dangereux !
+
+### Mode Libre
+Passez à travers les murs pour une expérience différente. Le serpent apparaît de l'autre côté.
+
+### Mode Multijoueur
+Affrontez un ami ! Le premier à mourir perd.
+
+## 🐛 Bugs Connus / Améliorations Futures
+
+- Le mode multijoueur utilise le même terminal (contraintes de ncurses)
+- Les thèmes sont pré-configurés (pas encore de personnalisation en jeu)
+- Le nom du joueur est fixé à "Player" dans les scores (pourrait être personnalisable)
+
+## 📝 Auteur
+
+Jeu développé en C avec toutes les fonctionnalités modernes d'un jeu de serpent complet et avancé.
+
+**Version :** 2.0 (Version complète avec toutes les fonctionnalités)
+**Lignes de code :** 1448
+**Compilation :** Sans erreurs ni warnings avec `-Wall -Wextra`
