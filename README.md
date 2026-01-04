@@ -1,6 +1,8 @@
 # Jeu du Serpent en C - Version Complète
 
-Un jeu de serpent ultra-développé en C utilisant la bibliothèque ncurses avec de nombreuses fonctionnalités avancées.
+Un jeu de serpent ultra-développé en C utilisant la bibliothèque **ncurses** pour l'interface graphique avec de nombreuses fonctionnalités avancées.
+
+> 📖 **Documentation de l'interface graphique** : Voir [INTERFACE_GRAPHIQUE.md](INTERFACE_GRAPHIQUE.md) pour les détails techniques sur l'intégration de l'interface graphique.
 
 ## 🎮 Fonctionnalités Principales
 
