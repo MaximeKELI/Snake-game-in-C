@@ -856,7 +856,7 @@ void game_loop(Game *game) {
         }
         
         Uint32 current = SDL_GetTicks();
-        if (current - last_move >= game->speed && !game->paused) {
+        if (current - last_move >= (Uint32)game->speed && !game->paused) {
             move_snake(game, &game->snake1);
             if (game->multiplayer) {
                 move_snake(game, &game->snake2);

@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -O2
-LDFLAGS = -lncurses
+CFLAGS = -Wall -Wextra -std=c11 -O2 $(shell sdl2-config --cflags 2>/dev/null || echo "")
+LDFLAGS = $(shell sdl2-config --libs 2>/dev/null || echo "-lSDL2")
 TARGET = snake
 SRC = snake.c
 TEST_TARGET = test_snake
@@ -14,7 +14,7 @@ $(TARGET): $(SRC)
 test: $(TEST_TARGET)
 
 $(TEST_TARGET): $(TEST_SRC)
-	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(TEST_SRC)
+	$(CC) -Wall -Wextra -std=c11 -O2 -o $(TEST_TARGET) $(TEST_SRC)
 	@echo "Tests compilés. Lancez ./$(TEST_TARGET) pour exécuter les tests."
 
 clean:
@@ -24,4 +24,3 @@ install: $(TARGET)
 	@echo "Le jeu est compile. Lancez-le avec: ./$(TARGET)"
 
 .PHONY: all test clean install
-
