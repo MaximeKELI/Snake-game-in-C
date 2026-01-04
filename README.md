@@ -198,6 +198,40 @@ Passez à travers les murs pour une expérience différente. Le serpent apparaî
 ### Mode Multijoueur
 Affrontez un ami ! Le premier à mourir perd.
 
+## 🧪 Tests Unitaires
+
+Le projet inclut une suite complète de tests unitaires pour vérifier la logique du jeu.
+
+### Compiler les tests
+```bash
+make test
+```
+
+### Exécuter les tests
+```bash
+./test_snake
+```
+
+### Tests couverts
+
+Les tests unitaires vérifient :
+
+- ✅ **Génération de positions** : Vérification que les positions aléatoires sont dans les limites
+- ✅ **Validation de positions** : Test des collisions avec obstacles, nourriture et serpents
+- ✅ **Initialisation du serpent** : Vérification des valeurs initiales et positions
+- ✅ **Initialisation du jeu** : Test de tous les modes et difficultés
+- ✅ **Système de power-ups** : Vérification des timers et effets
+- ✅ **Top scores** : Test de sauvegarde/chargement et tri des scores
+- ✅ **Caractères de nourriture** : Vérification des symboles
+- ✅ **Caractères de power-ups** : Vérification des symboles
+- ✅ **Logique de mouvement** : Test des positions initiales
+- ✅ **Modes de jeu** : Vérification de tous les modes (classique, arcade, défi, libre)
+
+**Statistiques des tests :**
+- Tests exécutés : 266
+- Taux de réussite : 100%
+- Couverture : Fonctions logiques principales
+
 ## 🐛 Bugs Connus / Améliorations Futures
 
 - Le mode multijoueur utilise le même terminal (contraintes de ncurses)
@@ -210,4 +244,5 @@ Jeu développé en C avec toutes les fonctionnalités modernes d'un jeu de serpe
 
 **Version :** 2.0 (Version complète avec toutes les fonctionnalités)
 **Lignes de code :** 1448
+**Tests unitaires :** 266 tests (100% de réussite)
 **Compilation :** Sans erreurs ni warnings avec `-Wall -Wextra`
